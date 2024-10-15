@@ -10,9 +10,32 @@ interface TabIconProps {
   focused: boolean;
 }
 
+const tabsList = [
+  {
+    name: "home",
+    title: "Home",
+    icon: icons.home,
+  },
+  {
+    name: "profile",
+    title: "Profile",
+    icon: icons.profile,
+  },
+  {
+    name: "create",
+    title: "Create",
+    icon: icons.plus,
+  },
+  {
+    name: "saved",
+    title: "Saved",
+    icon: icons.bookmark,
+  },
+];
+
 const TabIcon = ({ icon, color, name, focused }: TabIconProps) => {
   return (
-    <View className="items-center justify-center  gap-2">
+    <View className="items-center justify-center gap-2 mt-2">
       <Image
         source={icon}
         resizeMode="contain"
@@ -45,66 +68,24 @@ const TabLayout = () => {
           },
         }}
       >
-        <Tabs.Screen
-          name="home"
-          options={{
-            title: "Home",
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                color={color}
-                focused={focused}
-                name="Home"
-                icon={icons.home}
-              />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="profile"
-          options={{
-            title: "Profile",
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                color={color}
-                focused={focused}
-                name="Profile"
-                icon={icons.profile}
-              />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="create"
-          options={{
-            title: "Create",
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                color={color}
-                focused={focused}
-                name="Create"
-                icon={icons.plus}
-              />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="saved"
-          options={{
-            title: "Saved",
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                color={color}
-                focused={focused}
-                name="Saved"
-                icon={icons.bookmark}
-              />
-            ),
-          }}
-        />
+        {tabsList.map((tab) => (
+          <Tabs.Screen
+            key={tab.name}
+            name={tab.name}
+            options={{
+              title: tab.title,
+              headerShown: false,
+              tabBarIcon: ({ color, focused }) => (
+                <TabIcon
+                  color={color}
+                  focused={focused}
+                  name={tab.title}
+                  icon={tab.icon}
+                />
+              ),
+            }}
+          />
+        ))}
       </Tabs>
     </>
   );
