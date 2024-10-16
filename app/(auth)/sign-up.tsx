@@ -1,12 +1,13 @@
-import { View, Text, ScrollView, Image } from "react-native";
+import { View, Text, ScrollView, Image, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
+import { createUser } from "@/lib/appwrite";
 
-interface SingUpProps {
+export interface SingUpProps {
   username: string;
   email: string;
   password: string;
@@ -18,9 +19,23 @@ const SignUp = () => {
     email: "",
     password: "",
   });
-  const [isSubmitting, setisSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = () => {};
+  const submit = async () => {
+    if (!form.username || !form.email || !form.password) {
+      Alert.alert("Error", "Please fill in all the fields");
+    }
+    setIsSubmitting(true);
+    try {
+      const result = await createUser(form);
+      if (result) {
+        router.push("/home");
+      }
+    } catch (error) {
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
@@ -36,7 +51,7 @@ const SignUp = () => {
           <FormField
             title="Username"
             placeholder="Enter your username"
-            value={form.email}
+            value={form.username}
             handleChangeText={(e) => setform({ ...form, username: e })}
             otherStyles="mt-10"
           />
