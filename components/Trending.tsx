@@ -20,35 +20,46 @@ const zoomIn = {
 };
 
 const zoomOut: any = {
-  1: {
-    scale: 1,
-  },
   0: {
+    scale: 1.1,
+  },
+  1: {
     scale: 0.9,
   },
 };
 
 const TrendingItem = ({ activeItem, item }: any) => {
   const [play, setPlay] = useState(false);
-  console.log(activeItem, item.$id);
   return (
     <Animatable.View
       className="mr-5"
-      animation={activeItem ? zoomIn : zoomOut}
+      animation={activeItem === item.$id ? zoomIn : zoomOut}
       duration={500}
     >
       {play ? (
-        <Text className="text-white">Playing</Text>
+        <Video
+          source={{ uri: item.video }}
+          className="w-52 h-72 rounded-[35px] mt-3 bg-white/10"
+          resizeMode={ResizeMode.CONTAIN}
+          useNativeControls
+          shouldPlay
+          onPlaybackStatusUpdate={(status: any) => {
+            if (status.didJustFinish) {
+              setPlay(false);
+            }
+          }}
+        />
       ) : (
         <TouchableOpacity
           activeOpacity={0.7}
-          className="relative justify-center items-center"
+          className="relative flex justify-center items-center"
           onPress={() => setPlay(true)}
         >
           <ImageBackground
             source={{ uri: item.thumbnail }}
-            className="w-52 h-72 rounded-[35px] 
+            className="w-52 h-72 rounded-[33px] 
             overflow-hidden my-5 shadow-lg shadow-black-40"
+            resizeMode="cover"
           />
           <Image
             source={icons.play}
