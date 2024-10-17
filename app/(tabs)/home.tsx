@@ -13,11 +13,13 @@ import SearchInput from "@/components/SearchInput";
 import Trending from "@/components/Trending";
 import EmptyState from "@/components/EmptyState";
 import useAppwrite from "@/lib/useAppwrite";
-import { getAllPosts } from "@/lib/appwrite";
+import { getAllPosts, getLatestPosts } from "@/lib/appwrite";
 import { StatusBar } from "expo-status-bar";
+import VideoCard from "@/components/VideoCard";
 
 const Home = () => {
   const { data: posts, refetch, isLoading } = useAppwrite(getAllPosts);
+  const { data: latestPosts } = useAppwrite(getLatestPosts);
 
   const [searchValue, setSearchValue] = useState("");
   const [refreshing, setRefreshing] = useState(false);
@@ -33,9 +35,7 @@ const Home = () => {
       <FlatList
         data={posts}
         keyExtractor={(item: any) => item.$id}
-        renderItem={({ item }) => (
-          <Text className="text-3xl text-white">{item.title}</Text>
-        )}
+        renderItem={({ item }) => <VideoCard video={item} />}
         ListHeaderComponent={() => (
           <View className="my-6 px-4 space-y-6">
             <View className="justify-between items-start flex-row mb-6">
@@ -62,7 +62,7 @@ const Home = () => {
               <Text className="text-gray-100 text-lg font-pregular mb-3">
                 Latest videos
               </Text>
-              <Trending posts={[{ id: 1 }, { id: 2 }] ?? []} />
+              <Trending posts={latestPosts} />
             </View>
           </View>
         )}
