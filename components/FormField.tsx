@@ -6,7 +6,7 @@ interface FormFieldProps {
   title: string;
   value: string;
   placeholder: string;
-  handleChangeText: (e) => void;
+  handleChangeText: (e: any) => void;
   otherStyles?: string;
   keyboardType?: string;
 }
@@ -21,7 +21,6 @@ const FormField = ({
 }: FormFieldProps) => {
   const [showPassword, setshowPassword] = useState(false);
 
-  const submit = () => {};
   return (
     <View className={`space-y-2 ${otherStyles}`}>
       <Text className="text-base text-gray-100 font-pmedium">{title}</Text>
