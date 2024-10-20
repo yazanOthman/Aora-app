@@ -17,15 +17,15 @@ export const useGlobalContext = () => useContext(GlobalContext);
 
 const GlobalProvider = ({ children }: Props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [use, setUser] = useState<any>(null); // replace any with actual user type
+  const [user, setUser] = useState<any>(null); // replace any with actual user type
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getCurrentUser()
-      .then((resp) => {
-        if (resp) {
+      .then((res) => {
+        if (res) {
           setIsLoggedIn(true);
-          setUser(resp);
+          setUser(res);
         } else {
           setIsLoggedIn(false);
           setUser(null);
@@ -34,13 +34,15 @@ const GlobalProvider = ({ children }: Props) => {
       .catch((err) => {
         console.log(err);
       })
-      .finally(() => [setIsLoading(false)]);
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   const contextValue = {
     isLoggedIn,
     setIsLoggedIn,
-    use,
+    user,
     setUser,
     isLoading,
     setIsLoading,

@@ -6,6 +6,7 @@ import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 import { Link, router } from "expo-router";
 import { createUser } from "@/lib/appwrite";
+import { useGlobalContext } from "../context/GlobalProvider";
 
 export interface SingUpProps {
   username: string;
@@ -14,6 +15,7 @@ export interface SingUpProps {
 }
 
 const SignUp = () => {
+  const { setUser, setIsLoggedIn }: any = useGlobalContext();
   const [form, setform] = useState<SingUpProps>({
     username: "",
     email: "",
@@ -28,9 +30,9 @@ const SignUp = () => {
     setIsSubmitting(true);
     try {
       const result = await createUser(form);
-      if (result) {
-        router.push("/home");
-      }
+      setUser(result);
+      setIsLoggedIn(true);
+      router.replace("/home");
     } catch (error) {
     } finally {
       setIsSubmitting(false);
